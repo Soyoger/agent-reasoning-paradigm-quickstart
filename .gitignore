@@ -2,10 +2,12 @@
 __pycache__/
 *.py[codz]
 *$py.class
-
+*.pyc
 # C extensions
 *.so
-
+# trae
+.trae/
+.trae
 # Distribution / packaging
 .Python
 build/
