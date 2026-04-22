@@ -2,6 +2,7 @@ import sys
 import json
 import requests
 from pathlib import Path
+from typing import Dict, Callable, Any
 
 sys.path.append(str(Path(__file__).parent.parent.parent.parent))
 
@@ -20,10 +21,11 @@ system_prompt = """
 
 search_url = "https://zh.wikipedia.org/w/api.php?action=query&list=search&srsearch={}&format=json"
 
-# b'Please set a user-agent and respect our robot policy https://w.wiki/4wJS. See also https://phabricator.wikimedia.org/T400119.\n'
 headers = {
     "User-Agent": "https://w.wiki/4wJS (4wJS)"
 }
+
+
 def search_wikipedia(query: str) -> str:
     response = requests.get(search_url.format(query), headers=headers)
     data = response.json()
@@ -33,6 +35,22 @@ def search_wikipedia(query: str) -> str:
         return f"{title}\n{summary}"
     else:
         return f"未找到关于'{query}'的详细信息。"
+
+
+TOOL_REGISTRY: Dict[str, Callable] = {
+    "search_wikipedia": search_wikipedia,
+}
+
+
+def execute_tool(tool_name: str, arguments: Dict[str, Any]) -> str:
+    """通过工具名动态查找并执行工具函数"""
+    func = TOOL_REGISTRY.get(tool_name)
+    if func is None:
+        return f"未知工具: {tool_name}"
+    try:
+        return func(**arguments)
+    except Exception as e:
+        return f"工具执行失败: {str(e)}"
 
 
 def get_tools():
@@ -88,10 +106,9 @@ def react_loop(question: str, max_steps: int = 5):
         tool_call = message.tool_calls[0]
         tool_name = tool_call.function.name
         tool_args = json.loads(tool_call.function.arguments)
-        query = tool_args.get("query", "")
-        print(f">>> 调用工具: {tool_name}('{query}')")
+        print(f">>> 调用工具: {tool_name}({tool_args})")
 
-        tool_result = search_wikipedia(query)
+        tool_result = execute_tool(tool_name, tool_args)
         print(f">>> 工具返回: {tool_result}")
 
         tool_response_message = {

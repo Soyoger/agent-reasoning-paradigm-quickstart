@@ -8,6 +8,10 @@ __pycache__/
 # trae
 .trae/
 .trae
+.vscode/
+.idea/
+.claude/
+
 # Distribution / packaging
 .Python
 build/
