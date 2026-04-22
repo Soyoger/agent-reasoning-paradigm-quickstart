@@ -71,7 +71,11 @@ class Planner:
 
                 print(f"✅ 计划已生成:")
                 for i, step in enumerate(plan, 1):
-                    print(f"  {i}. {step}")
+                    idx = f"{i}."
+                    if(step.strip().startswith(idx)):
+                        print(f" {step}")
+                    else:
+                        print(f" {idx} {step}")
 
                 return plan
             else:
