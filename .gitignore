@@ -11,7 +11,7 @@ __pycache__/
 .vscode/
 .idea/
 .claude/
-
+.qoder/
 # Distribution / packaging
 .Python
 build/

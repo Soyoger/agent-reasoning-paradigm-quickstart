@@ -2,10 +2,11 @@ import sys
 from pathlib import Path
 from openai import OpenAI
 sys.path.append(str(Path(__file__).parent.parent.parent.parent))
-from config import base_url, api_key
 
+from config import base_url, api_key
 from Planner import Planner
-from Executor import Executor, get_mock_tools
+from Executor import Executor
+from MockTools import get_mock_tools
 
 
 
