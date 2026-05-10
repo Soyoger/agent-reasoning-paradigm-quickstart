@@ -113,6 +113,6 @@ if __name__ == "__main__":
     planner = ToTPlanner()
     
     # 案例：智能座舱多任务规划
-    cockpit_problem = "今天下午3点前要去接孩子，路上要买束花，还要顺便给车充个电。现在1:30，请规划最省时路线。"
+    cockpit_problem = "今天下午3点前要开车去接孩子，从家走路过去买束花单程15min，从充电桩走过去买花单程10min，还要顺便给车充个电30min，可能会堵车10min。现在2:00，请规划最省时路线。"
     
     planner.solve(cockpit_problem, max_steps=3, beam_width=2)
